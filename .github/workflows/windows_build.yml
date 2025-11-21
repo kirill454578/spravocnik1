@@ -1,4 +1,4 @@
-name: Build Windows EXE
+name: Сборка Windows EXE
 
 on:
   workflow_dispatch:
@@ -8,22 +8,25 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
       - name: Install Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build Windows App
-        run: npx electron-builder --win
+      - name: Build project
+        run: npm run build
+
+      - name: Package EXE
+        run: npx electron-packager . app --platform=win32 --arch=x64
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: Spravocnik-Windows
-          path: dist/
+          name: windows-exe
+          path: app-win32-x64/
